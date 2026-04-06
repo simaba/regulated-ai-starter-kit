@@ -1,0 +1,52 @@
+name: Validate Release Configuration
+
+on:
+  push:
+    paths:
+      - 'release/release-checklist.yaml'
+  pull_request:
+    paths:
+      - 'release/release-checklist.yaml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: Validate release checklist YAML
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Validate release checklist structure
+        run: |
+          python3 - <<'EOF'
+          import yaml, sys
+
+          with open("release/release-checklist.yaml") as f:
+              config = yaml.safe_load(f)
+
+          required_top = ["metadata", "model_validation", "governance", "infrastructure"]
+          missing = [k for k in required_top if k not in config]
+          if missing:
+              print(f"ERROR: Missing required sections: {missing}")
+              sys.exit(1)
+
+          meta = config.get("metadata", {})
+          required_meta = ["project", "version", "environment", "regulated_industry", "risk_classification"]
+          missing_meta = [k for k in required_meta if not meta.get(k) or meta.get(k) in [None, "YOUR_PROJECT_NAME"]]
+          if missing_meta:
+              print(f"WARNING: Unconfigured metadata fields: {missing_meta}")
+              print("Please customize release-checklist.yaml with your project details.")
+
+          print("✓ Release checklist YAML structure is valid")
+          print(f"  Project: {meta.get('project', 'not set')}")
+          print(f"  Environment: {meta.get('environment', 'not set')}")
+          print(f"  Risk Classification: {meta.get('risk_classification', 'not set')}")
+          EOF
