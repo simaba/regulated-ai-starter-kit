@@ -1,0 +1,69 @@
+# Release Readiness Gate Configuration
+# Customize this file for your organization's deployment requirements
+# Aligned with NIST AI RMF Measure function
+
+metadata:
+  project: "YOUR_PROJECT_NAME"
+  version: "1.0.0"
+  environment: "production"        # staging | production | canary
+  regulated_industry: "general"   # healthcare | finance | insurance | government | general
+  risk_classification: "high"     # high | medium | low (see governance policy)
+  deployment_date: null            # Set before deployment: YYYY-MM-DD
+  deployment_owner: null           # Name of person responsible for deployment
+
+# ── Model Validation Gates ────────────────────────────────────────────────────
+model_validation:
+  performance:
+    accuracy_threshold: 0.90        # Minimum accuracy on holdout test set
+    f1_threshold: 0.85              # Minimum F1 score (for classification tasks)
+    latency_p99_ms: 500             # Max 99th percentile inference latency (ms)
+    throughput_rps: 100             # Minimum requests per second under load
+  fairness:
+    bias_evaluation_complete: false  # Set to true after bias audit
+    disparate_impact_ratio: 0.80     # Minimum ratio (1.0 = perfect parity)
+    subgroup_performance_review: false
+  robustness:
+    adversarial_testing_complete: false
+    distribution_shift_tested: false
+    edge_case_coverage_percent: 80
+
+# ── Governance Gates ──────────────────────────────────────────────────────────
+governance:
+  documentation:
+    model_card_complete: false
+    risk_assessment_complete: false
+    data_lineage_documented: false
+    explainability_report_complete: false
+  approvals:
+    technical_review: false        # Engineering lead sign-off
+    ai_governance_review: false    # AI governance team sign-off
+    legal_review: false            # Legal / compliance sign-off
+    security_review: false         # InfoSec sign-off
+  regulatory:
+    gdpr_assessment_complete: false  # If applicable
+    hipaa_assessment_complete: false # If applicable (healthcare)
+    sr_11_7_compliance: false        # If applicable (financial services)
+
+# ── Infrastructure Gates ──────────────────────────────────────────────────────
+infrastructure:
+  testing:
+    unit_tests_passing: false
+    integration_tests_passing: false
+    load_test_passed: false
+    security_scan_passed: false
+  monitoring:
+    alerting_configured: false
+    logging_enabled: false
+    drift_detection_enabled: false
+    dashboards_ready: false
+  rollback:
+    rollback_plan_documented: false
+    rollback_tested: false
+    previous_version_preserved: false
+
+# ── Incident Readiness ────────────────────────────────────────────────────────
+incident_readiness:
+  runbook_complete: false
+  escalation_contacts_defined: false
+  on_call_rotation_configured: false
+  incident_playbook_reviewed: false
