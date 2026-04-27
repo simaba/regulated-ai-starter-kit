@@ -1,0 +1,46 @@
+metadata:
+  project: "Document Triage Assistant"
+  version: "0.1.0"
+  environment: "staging"
+  regulated_industry: "general"
+  risk_classification: "medium"
+  deployment_owner: "Example Product Owner"
+
+model_validation:
+  performance:
+    accuracy_threshold: 0.90
+    bias_evaluation_complete: true
+    adversarial_testing_complete: false
+  fairness:
+    disparate_impact_ratio: 0.86
+    subgroup_performance_review: true
+
+governance:
+  documentation:
+    model_card_complete: true
+    risk_assessment_complete: true
+    explainability_report_complete: false
+  approvals:
+    technical_review: true
+    ai_governance_review: true
+    legal_review: false
+    security_review: true
+  regulatory:
+    privacy_review_complete: true
+
+infrastructure:
+  testing:
+    unit_tests_passing: true
+    integration_tests_passing: true
+    security_scan_passed: true
+    load_test_passed: false
+  monitoring:
+    alerting_configured: true
+    drift_detection_enabled: true
+  rollback:
+    rollback_plan_documented: true
+    rollback_tested: false
+
+incident_readiness:
+  runbook_complete: true
+  escalation_contacts_defined: true
